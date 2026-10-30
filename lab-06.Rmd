@@ -30,14 +30,11 @@ knitr::include_graphics("img/Speaking-the-world.jpg")
 
 _Write your comments about image 1 below_
 
-This infographic compares the ten most spoken languages, and it is a good example of how decoration can get in the way of the data.
-
-* **Mathematics.** The bars are drawn in perspective and decorated with speech-bubble patterns, so their lengths no longer map linearly onto the numbers. Chinese is roughly eight times Japanese, but the bar is only about twice as long visually.
-* **Data.** The units are silently mixed: Chinese is reported in *billions* of speakers while every other language is in *millions*. A reader skimming the numbers can easily conclude that Chinese has 1,026 speakers. It is also unclear whether "speakers" means native speakers only, or native plus second-language speakers, and no source or reference year is given.
-* **People.** Colour and text size are used to highlight Chinese, which frames the chart as a ranking contest rather than a description of a distribution.
-* **Computer / design.** The cartoon people, gradient background and textures are chart junk: they consume a large share of the plotting area and compete with the data.
-
-A better alternative is a plain horizontal bar chart with a single, clearly stated unit (for example millions of speakers), ordered by value, with a source note. If the native / non-native distinction matters, a stacked horizontal bar would show it.
+- Mathematics: perspective bars + patterns distort length (China ≈ 8× Japan, drawn ≈ 2×).
+- Data: Chinese in *billions*, others in *millions*; no source, year or native/L2 definition.
+- People: colour and size frame it as a contest, not a distribution.
+- Computer: chart junk fills the plotting area.
+- Better: single-unit horizontal bar, ordered, with source.
 
 ## Image 2
 
@@ -47,13 +44,10 @@ knitr::include_graphics("img/rose-pop-density-total-area-bw.jpg")
 
 _Write your comments about image 2 below_
 
-This "rose" chart claims to compare countries by **population density and total area**, but a pie-like chart can only encode one variable: the share of a whole.
-
-* **Mathematics.** Two different quantitative variables (total area, people per square kilometre) are collapsed into a single angle. There is no arithmetic relationship between the two, so the reader cannot check any slice against either variable. Slices are also hard to compare because angles are much harder to judge than lengths, and the rose is not even a true pie: the segments are equal in length, so only the area is compared.
-* **Data.** No values, units or source are shown, so the chart cannot be verified at all.
-* **Computer / design.** Six shades of grey are not separable, several labels require leader lines, and the white centre removes area that readers will still include in their mental estimate.
-
-A better alternative is a scatterplot of area (x) against density (y), with a log scale on density and points labelled by country, or a simple ranked bar chart if only one variable matters.
+- Mathematics: two unrelated quantitative variables (area, density) squeezed into one angle; angles are hard to compare.
+- Data: no values, units or source.
+- Computer: six indistinguishable greys, leader lines, hollow centre.
+- Better: area vs density scatter (log density), or one ranked bar.
 
 ## Image 3
 
@@ -63,13 +57,10 @@ knitr::include_graphics("img/life-expectancy-rule-of-law.png")
 
 _Write your comments about image 3 below_
 
-A bubble chart of life expectancy against the rule-of-law index.
-
-* **Mathematics / data.** Four variables are encoded at once (x, y, bubble size, colour) but only x and y are explained. Size presumably shows population, yet there is no size legend and no scale on either axis, so no value can be read off the chart.
-* **Data.** Many bubbles overlap heavily in the upper-right corner, which hides exactly the countries with the highest life expectancy. The colour scheme is unexplained and does not map onto any visible ordering.
-* **Computer / design.** Country labels collide and are placed inside the bubbles, so several labels are unreadable. The interactive version was clearly meant to be explored with tooltips; as a static screenshot most of the information is lost.
-
-Better: drop the colour channel, add opacity and light jitter, label only selected countries, and add axis ticks and a size legend, or split the countries into small multiples by region.
+- Mathematics: four channels, two explained; no axis scales, no size legend.
+- Data: heavy overlap hides the top-right countries; colour unexplained.
+- Computer: labels collide inside bubbles; static version loses the tooltips.
+- Better: fewer channels, opacity, ticks, selective labels.
 
 ## Image 4
 
@@ -79,13 +70,10 @@ knitr::include_graphics("img/global-income-dist.PNG")
 
 _Write your comments about image 4 below_
 
-A "global income distribution" built from overlapping density curves.
-
-* **Mathematics.** The caption explains that the area under each region's curve is proportional to its population, which means the vertical axis is not a density that can be read directly, and the regions overlap in the income range 1,000-10,000 USD, so the curves cannot be stacked or added. The reader has to do mental integration to answer the obvious question: what share of people live below 456 USD?
-* **Data.** The distribution is a *smoothed* density of grouped income bins, so the curve height is a modelling choice, not an observation. Two different poverty lines are annotated and the x-axis is logarithmic but labelled at irregular intervals.
-* **Computer / design.** Seven colours in a filled area chart, with labels placed inside the areas, are hard to match back to the legend (there is no legend at all).
-
-Better: a ridgeline plot (one row per region, share of population on a common axis), or a small-multiple line chart of the density per region plus a separate line for the overall distribution, with a clearly marked poverty line.
+- Mathematics: overlapping densities cannot be stacked or added; area-proportional y needs mental integration.
+- Data: smoothed summary of binned data; two poverty lines, irregular log ticks.
+- Computer: seven fills, no legend, labels inside areas.
+- Better: ridgeline, or per-region small multiples plus an overall line.
 
 # Data Visualization for Halloween 
 
@@ -120,13 +108,9 @@ dim(candy_df)    # both
 
 _Write your comments about results_
 
-The data set has **85 observations** (one per candy) and **13 variables**, which is one identifier, nine categorical variables and three continuous variables:
-
-* `competitorname` — identifier (character), not used for plotting directly but useful for labelling and highlighting individual candies.
-* `chocolate`, `fruity`, `caramel`, `peanutyalmondy`, `nougat`, `crispedricewafer`, `hard`, `bar`, `pluribus` — nine **logical / categorical** variables recording whether a candy has a given ingredient or property. In R they arrive as `logical`, and a logical variable is a two-level categorical variable, so it should be plotted with `geom_bar()` (counts), `geom_boxplot()` (comparing a numeric variable across the two levels) or as `colour` / `fill` / `facet` in a multi-variable plot.
-* `sugarpercent`, `pricepercent`, `winpercent` — three **continuous numeric** variables (all on a 0-100-ish scale for sugar and price, and a percentage for win rate). These are the variables that can be shown as a histogram, a density, a scatterplot or a line.
-
-The distinction matters because the geometry must match the variable type: bar charts for categories, histograms and boxplots for numeric variables, and points or lines when at least one numeric variable is paired with another.
+- 85 observations, 13 variables.
+- 1 identifier, 9 logical (categorical: ingredient flags), 3 numeric (sugar, price, win percent).
+- Type decides geometry: bars/boxes for categories, histogram/scatter for numeric.
 
 # Data viz - One variable at a time
 
@@ -152,13 +136,10 @@ ggplot(candy_df, aes(x = caramel)) +
   theme_minimal()
 ```
 
-14 of the 85 candies (about 16%) contain caramel, compared with 71 that do not. Because `caramel` is now a two-level factor, `geom_bar()` simply counts the rows in each level.
-
 _Write your interpretation here_
 
-Caramel is a minority ingredient. Only a handful of the candies in the study contain it, so any comparison of win percentage by caramel is based on a small group (n = 14) and the differences will be less reliable than the chocolate comparison.
+- 14 of 85 (16%) contain caramel; small group, so later comparisons are noisy.
 
-* What is your interpretation here?
 * How about "How many candies contain chocolate?" Make a bar plot of chocolate. Include x and y labels and a title.
 
 ```{r}
@@ -172,7 +153,7 @@ ggplot(candy_df, aes(x = chocolate)) +
   theme_minimal()
 ```
 
-37 candies (44%) are chocolate and 48 are not, so chocolate is the most evenly split ingredient in the data set. This is convenient: the two groups are of comparable size, which makes the chocolate vs win percentage comparison in Exercise 5 meaningful.
+- 37 chocolate (44%) vs 48; balanced groups make Ex5 meaningful.
 
 ## Exercise 3
 
@@ -191,7 +172,8 @@ ggplot(candy_df, aes(x = winpercent)) +
 
 * Interpret your histogram result here
 
-The distribution is roughly unimodal and fairly symmetric around 50%, with the bulk of the candies between 35% and 65%. The range is wide (22.4% to 84.2%), with a short right tail made up of a few very popular chocolate-and-peanut candies (Reese's Peanut Butter cup at 84.2%, Reese's Miniatures at 81.9%, Twix at 81.6%), and a left tail of hard, chewy or old-fashioned sweets (Nik L Nip 22.4%, Boston Baked Beans 23.4%, Chiclets 24.5%). The mean (50.3%) and the median (47.8%) are close, which is consistent with a roughly symmetric shape.
+- Unimodal, roughly symmetric, centred near 50 (range 22.4-84.2); mean 50.3 ≈ median 47.8.
+- Light right tail: Reese's Peanut Butter cup 84.2, Miniatures 81.9, Twix 81.6.
 
 * Play with the binwidth or bins parameter in the new version by using binwidth = 20. How this effects the result ?
 
@@ -206,7 +188,7 @@ ggplot(candy_df, aes(x = winpercent)) +
   theme_minimal()
 ```
 
-With `binwidth = 20` the whole 22-84% range collapses into only four bins, so almost all of the shape information disappears and the chart looks as if the data were concentrated in one or two bars. Bins that are too wide hide the shape; bins that are too narrow produce a spiky histogram dominated by noise. `bins = 15` (roughly 4 percentage points per bin for this range) is a reasonable middle ground, and `binwidth = 5` is worth trying to see the individual peaks.
+- Only four bins: all shape information is lost. Too wide hides the shape, too narrow shows noise.
 
 # Data viz - more than one variable
 
@@ -228,12 +210,12 @@ ggplot(candy_df, aes(x = winpercent)) +
   theme_minimal()
 ```
 
-Faceting puts each chocolate group in its own panel with its own count axis. The chocolate panel sits clearly to the right of the non-chocolate panel, which is the same message the summary statistics give in Exercise 5, but it is much easier to see here.
+- Facets give each group its own panel: chocolate clearly shifted right.
 
 - Consider adding the `fill = caramel` within the aes() vs. geom_histogram(), what do you get? 
 
 ```{r}
-# fill mapped inside aes(): the bins are split (stacked) by caramel and a legend is added
+# fill mapped inside aes(): bins split (stacked) by caramel, legend added
 ggplot(candy_df, aes(x = winpercent, fill = caramel)) +
   geom_histogram(bins = 12, colour = "white") +
   facet_wrap(~ chocolate) +
@@ -257,7 +239,9 @@ ggplot(candy_df, aes(x = winpercent)) +
   theme_minimal()
 ```
 
-Inside `aes()`, `fill` becomes an *aesthetic*: each bin is divided into caramel and non-caramel portions, a legend appears, and with the default `position = "stack"` the bar heights are the stacked totals, so the shape of the caramel group is hard to judge (it is only 14 candies). Placed inside `geom_histogram(fill = "steelblue")` it is only a fixed colour for the whole layer, so no grouping and no legend. For comparing distributions, mapping `fill` and adding `position = "identity"` with `alpha` (or using `geom_density()`) is more informative than stacking.
+- `aes(fill=)`: grouped + legend, stacked bars make the small caramel group unreadable.
+- `geom_histogram(fill=)`: fixed colour, no grouping.
+- For comparison: `position = "identity"` + alpha, or densities.
 
 ## Exercise 5
 
@@ -275,12 +259,11 @@ ggplot(candy_df, aes(x = chocolate, y = winpercent)) +
   theme_minimal()
 ```
 
-There is a clear positive relationship: the chocolate box sits about 19 percentage points above the non-chocolate box, the medians are 60.8% vs 41.6%, and even the lower quartile of the chocolate group is above the median of the non-chocolate group. The overlap is small - a few chocolate candies do badly (for example Mr Good Bar and Nestle Smarties are below 55%) and a few non-chocolate candies do very well (Twix is chocolate, but candies such as Kit Kat aside, the best non-chocolate performers are below the chocolate median), so the pattern is strong but not absolute.
+- Strong positive: +19 points, medians 60.8 vs 41.6; the chocolate lower quartile beats the non-chocolate median.
 
 - Consider the similar pair by replacing chocolate with caramel, fruity and compare their results. 
 
 ```{r}
-# caramel instead of chocolate
 ggplot(candy_df, aes(x = caramel, y = winpercent)) +
   geom_boxplot(width = 0.4, outlier.shape = NA) +
   geom_jitter(width = 0.1, height = 0, alpha = 0.6) +
@@ -291,7 +274,6 @@ ggplot(candy_df, aes(x = caramel, y = winpercent)) +
   ) +
   theme_minimal()
 
-# fruity instead of chocolate
 ggplot(candy_df, aes(x = fruity, y = winpercent)) +
   geom_boxplot(width = 0.4, outlier.shape = NA) +
   geom_jitter(width = 0.1, height = 0, alpha = 0.6) +
@@ -303,7 +285,9 @@ ggplot(candy_df, aes(x = fruity, y = winpercent)) +
   theme_minimal()
 ```
 
-Caramel behaves like a weaker version of chocolate (mean 57.3% vs 48.9%), but with only 14 caramel candies the box is wide and the two distributions overlap a lot. Fruity works in the opposite direction (mean 44.1% vs 55.3%): fruity sweets are, on average, about 11 points less popular. Of the three, chocolate is by far the strongest single predictor of winning, and part of the caramel effect is probably explained by the fact that many caramel candies are also chocolate.
+- Caramel: same direction, weaker (57.3 vs 48.9), n = 14, heavy overlap.
+- Fruity: opposite (44.1 vs 55.3).
+- Chocolate is the strongest single predictor; caramel is partly confounded by chocolate.
 
 - Also include summary statistics details for this discussion by using the calculation below: 
 
@@ -316,8 +300,6 @@ candy_rankings %>%
     median_win = median(winpercent)
   )
 ```
-
-The summary confirms the picture: chocolate candies average 60.9% (median 60.8%) against 42.1% (median 41.6%) for the rest, a gap of almost 19 percentage points with n = 37 and n = 48.
 
 ## Exercise 6
 
@@ -338,7 +320,7 @@ ggplot(candy_df, aes(x = pricepercent, y = winpercent)) +
   theme_minimal()
 ```
 
-The relationship is positive but weak (r = 0.35): the trend line rises, yet the points form a wide cloud, and at any given price the win percentage can vary by 40 points. Price explains only about 12% of the variation in win percentage, so price alone is not a good predictor - a cheap chocolate bar can beat an expensive hard candy.
+- Weak positive, r = 0.35 (≈12% of variance); wide scatter, 40-point spread at any price.
 
 * Add color = chocolate to add a third variable to the created visualization
 
@@ -355,7 +337,7 @@ ggplot(candy_df, aes(x = pricepercent, y = winpercent, colour = chocolate)) +
   theme_minimal()
 ```
 
-With colour added, the price effect nearly disappears *within* each group: both regression lines are almost flat, and the overall positive trend comes mostly from the fact that chocolate candies are on average both more expensive and more popular. This is a nice example of a confounder - chocolate is the real driver, price is a proxy for it.
+- Within each group the lines are almost flat: chocolate confounds price.
 
 * How to facet this by using another categorical variable such as `bar`? 
 
@@ -372,7 +354,7 @@ ggplot(candy_df, aes(x = pricepercent, y = winpercent, colour = chocolate)) +
   theme_minimal()
 ```
 
-`facet_wrap(~ bar)` splits the plot into a panel for bars and a panel for non-bars. The bar panel contains only 21 candies, nearly all of them chocolate, and almost all of them sit high on the win axis; the non-bar panel carries the whole spread of the data. The bar/non-bar split therefore explains a good part of the price-win relationship as well, and the very small panel makes any further trend hard to read.
+- Bar panel: 21 points, nearly all chocolate and high; non-bar panel holds the spread.
 
 ## Exercise 7
 
@@ -389,7 +371,6 @@ ggplot(candy_df, aes(x = chocolate, fill = bar)) +
   ) +
   theme_minimal()
 
-# Proportions within each chocolate group make the comparison fair
 ggplot(candy_df, aes(x = chocolate, fill = bar)) +
   geom_bar(position = "fill") +
   labs(
@@ -401,7 +382,8 @@ ggplot(candy_df, aes(x = chocolate, fill = bar)) +
   theme_minimal()
 ```
 
-Yes. Among the 37 chocolate candies, 20 (54%) are bars; among the 48 non-chocolate candies only 1 (2%) is a bar. The first plot shows the counts, but because the two groups have different sizes the second, proportional plot is the honest comparison. Almost all candy bars in this data set are chocolate, which is unsurprising given that a bar is essentially a format for delivering chocolate.
+- Yes: 20/37 chocolate candies are bars (54%) vs 1/48 (2%).
+- Unequal group sizes make the proportional version the fair comparison.
 
 ## Exercise 8
 
@@ -437,7 +419,9 @@ ggplot(candy_df, aes(x = price_sugar, y = winpercent, colour = candy_group)) +
   theme_minimal()
 ```
 
-There is no meaningful relationship: the cloud of "other candies" is essentially flat and even slightly negative, and the two highlighted points are pure outliers. "One quarter" has a ratio of 46.5 and "One dime" 10.5, against a median of about 1.1 for everything else, because both have the minimum `sugarpercent` (0.011). A ratio with a denominator close to zero is unstable: small differences in sugar produce enormous differences in the ratio, so this variable compresses all the real candies into the left edge of the plot and tells us nothing about popularity. Plotting the ratio on a log scale (or simply using price and sugar as two separate axes) would be far more informative.
+- No relationship: the cloud is flat, the two highlighted points are outliers.
+- Ratio unstable: both have the minimum sugar (0.011) → 46.5 and 10.5 vs a median of ~1.1.
+- Log x (or two separate axes) would be far more informative.
 
 ## Exercise 9
 
@@ -457,7 +441,9 @@ ggplot(candy_df, aes(x = price_sugar, y = winpercent, colour = fruity)) +
   theme_minimal()
 ```
 
-The two panels are very different. The bar panel (21 candies) is a tight, high-lying cluster: win percentages are almost all above 55% and the points are almost entirely non-fruity (chocolate), so within bars neither the ratio nor the fruity flag can separate winners. The non-bar panel contains 64 candies spread over the whole range, is dominated by fruity points, and shows a weak negative tendency - the cheap, low-sugar-per-price sweets are not better, they are simply noisy. In both panels the ratio is concentrated below 3 once the log scale is used, which again shows that the two highlighted outliers drove the apparent pattern in Exercise 8. Faceting makes the point that bar shape is a much stronger predictor of winning than the price-per-sugar ratio.
+- Bar panel: tight, high (almost all > 55%), non-fruity → no separation.
+- Non-bar panel: 64 points, fruity-dominated, weak negative trend.
+- Bar shape matters far more than the ratio; faceting shows the outliers drove Ex8.
 
 ---
 
@@ -472,15 +458,16 @@ staff <- read_csv("data/instructional-staff.csv")
 
 What is the difference between *wide format* data and *long format* data?
 
-In **wide format** each row is a case (here: a type of instructional staff) and the different *measurements* of that case are spread across several columns (here: one column per year). In **long format** each row is a single observation (one case at one point in time), so the measured value appears in one column (`percent`) and the thing that identifies the measurement - the year - appears in another (`year`). Long data usually has more rows and fewer columns, and it is the format `ggplot2` expects when a variable such as year has to be mapped to an axis, a colour or a facet.
+- Wide: one row per case, measurements spread over columns.
+- Long: one row per observation, values in one column, identifier (year) in another. This is what `ggplot2` needs for axes, colour and facets.
 
 Is the format `staff` data *wide* or *long*?
 
-Wide: each of the five rows is a faculty type and each of the eleven years is a separate column.
+- Wide: five rows (faculty types) × eleven year columns.
 
 How many observations are there in the data set?
 
-There are 5 cases (faculty types) and 12 variables (`faculty_type` plus the 11 years 1975 to 2011). If "observation" means a case, there are 5; if it means a single measurement of a faculty type in a year, there are 5 x 11 = 55 observations, which is the number of rows the data will have after pivoting.
+- 5 cases, 12 variables; 5 × 11 = 55 measurements (= rows after pivoting).
 
 ```{r}
 dim(staff)
@@ -501,7 +488,8 @@ staff_long
 nrow(staff_long)
 ```
 
-`staff_long` has 55 rows (5 faculty types x 11 years) and 3 columns, which matches the 5 x 11 = 55 observations counted in Exercise 1. Note that `year` has been created from the column names, so it arrives as a character variable - this is exactly what causes the problem in Exercise 4.
+- 55 rows = 5 × 11, matching Exercise 1.
+- `year` comes from column names, so it is character: the cause of the Exercise 4 problem.
 
 
 ## Exercise 3
@@ -518,7 +506,7 @@ ggplot(data = staff_long, mapping = aes(x = year, y = percent, colour = faculty_
   theme_minimal()
 ```
 
-Each part of the code does one job: `data = staff_long` supplies the long data, `mapping = aes(...)` says which variable goes on which channel, and `geom_point()` draws one dot per row, i.e. one dot per faculty type per year, with the colour separating the five series.
+- `data` = long data, `mapping` = variable-to-channel, `geom_point()` = one dot per type-year, colour splits the series.
 
 
 ## Exercise 4
@@ -535,7 +523,9 @@ ggplot(data = staff_long, mapping = aes(x = year, y = percent, colour = faculty_
   theme_minimal()
 ```
 
-The lines are drawn, but the shape is misleading: the x-axis is categorical, so all eleven years are placed at equal distances apart. In reality the gaps are 14, 4, 2, 4, 2, 2, 2, 2, 2 and 2 years, so the steep part of the curve at the beginning is stretched over the same distance as the flat part at the end. The result is that a 3-point drop over 14 years looks faster than a 3-point drop over 2 years, and every line looks like it accelerates in the 1990s. The dot plot of Exercise 3 shows the same equal spacing, which is the clue: the problem is the variable type of `year`, not `geom_line()`.
+- x is categorical: all eleven years are equally spaced (real gaps 14, 4, 2, …, 2).
+- Early slopes look as fast as later ones; every series appears to accelerate in the 1990s.
+- Clue: equally spaced dots in the Exercise 3 plot.
 
 
 ## Exercise 5
@@ -561,7 +551,7 @@ ggplot(data = staff_long, mapping = aes(x = year, y = percent, colour = faculty_
   theme_minimal()
 ```
 
-Now that `year` is numeric, the points are positioned according to their true distance in time and the slopes have a real meaning: part-time faculty rise steadily, tenured faculty fall steadily, and the other three categories move much less.
+- Numeric year positions the points by true time; slopes now comparable.
 
 
 ## Exercise 6
@@ -587,27 +577,27 @@ ggplot(data = staff_long, mapping = aes(x = year, y = percent, colour = faculty_
   )
 ```
 
-The improvements are: a title that states the finding instead of repeating the variable names, a subtitle that defines the population and units, a caption with the source, a proper legend title instead of the variable name, readable and round break points on both axes, a y-axis that includes zero so the differences are not exaggerated, and a clean theme with the minor grid removed. Direct labelling of the lines would improve it further, because the reader currently has to match five colours to five labels.
+- Finding in the title; units and population in the subtitle; source caption.
+- Legend title, round ticks, zero-based y, minimal grid.
+- Next step: direct labels instead of a five-colour legend.
 
 
 ## Exercise 7
 
 _Write below your ideas for adapting the line plot_
 
-The brief is a story, not a description: "the proportion of part-time faculty has gone up over time, compared with other instructional staff types". Ideas for telling that story:
-
-* Idea 1 - **Emphasis by colour**: keep the four other categories in light grey and draw part-time faculty in a strong colour, with a legend-free direct label. Pre-attentive colour does the work of the title.
-* Idea 2 - **Annotate the two ends**: label the starting value (24.0% in 1975) and the final value (41.3% in 2011) on the highlighted line, and annotate the change (+17.3 percentage points) instead of leaving the reader to subtract.
-* Idea 3 - **Change from 1975 instead of levels**: plot each series as a percentage-point change relative to 1975, so the line starts at 0 and the reader sees directly which groups gained and which lost.
-* Idea 4 - **Rank and compare a before/after snapshot**: a dumbbell (slope) chart of 1975 vs 2011 makes the direction and size of change comparable across all five types in one glance.
-* Idea 5 - **Small multiples**: one panel per faculty type, each with its own line and the 1975 value as a reference line, which removes the overlapping-lines problem and makes each trend readable on its own scale.
-* Idea 6 - **Reframe the data**: group the five categories into "tenured / tenure-track" vs "non-tenure-track / part-time", or show part-time as a share of all non-tenured staff, to make the casualisation story even more explicit.
+* Idea 1 - emphasise part-time, grey the rest (no legend).
+* Idea 2 - label the 1975 and 2011 values on the highlighted line.
+* Idea 3 - plot change since 1975 (percentage points).
+* Idea 4 - dumbbell chart of 1975 vs 2011.
+* Idea 5 - small multiples, one panel per type.
+* Idea 6 - reframe: tenured vs non-tenured, or part-time share of non-tenured staff.
 
 Ideas 1, 2 and 4 are implemented below.
 
 
 ```{r implement-Ex7}
-# Idea 1 + 2: highlight part-time faculty, annotate the endpoints
+# Ideas 1 + 2: highlight part-time faculty and annotate both ends
 staff_long <- staff_long %>%
   mutate(
     highlight = if_else(
@@ -635,7 +625,7 @@ ggplot(staff_long, aes(x = year, y = percent, group = faculty_type, colour = hig
   scale_x_continuous(breaks = seq(1975, 2011, by = 4)) +
   labs(
     title = "Part-time faculty grew from 24% to 41% of instructional staff",
-    subtitle = "US colleges and universities, 1975-2011; other staff types are shown in grey",
+    subtitle = "US colleges and universities, 1975-2011; other staff types in grey",
     x = "Year",
     y = "Share of instructional staff (%)",
     colour = NULL,
@@ -650,7 +640,7 @@ ggplot(staff_long, aes(x = year, y = percent, group = faculty_type, colour = hig
 ```
 
 ```{r implement-Ex7-dumbbell}
-# Idea 4: a dumbbell chart of 1975 vs 2011 makes the change comparable across types
+# Idea 4: dumbbell chart, 1975 vs 2011
 staff_long %>%
   filter(year %in% c(1975, 2011)) %>%
   mutate(year = factor(year)) %>%
@@ -674,10 +664,10 @@ staff_long %>%
   )
 ```
 
-The first plot changes three things. The colour channel is reduced from five categories to two - one accent colour for part-time faculty and grey for everything else - so the eye is drawn to the series that carries the story instead of having to compare five similar hues. The two ends of the line are labelled with the actual values (24.0% and 41.3%), and the title states the finding ("grew from 24% to 41%") rather than describing the axes. Everything else (grid, subtitle, caption) is kept minimal so that nothing competes with the highlighted series.
-
-The second plot answers the comparative part of the brief. A dumbbell chart puts the five staff types on the y-axis and shows 1975 and 2011 as two dots joined by a line, so the length of the connector is the change and the direction is instantly visible. It shows that part-time faculty (+17.3 points) and full-time non-tenure-track faculty (+5.1 points) are the only groups that grew, while full-time tenured (-12.3) and tenure-track (-8.7) faculty shrank and graduate student employees were roughly flat. Together the two plots make the casualisation story explicit: the growth is concentrated in the least secure category.
+- Plot 1: five colours → two (one accent, rest grey); the ends are labelled (24.0%, 41.3%); the title states the finding.
+- Plot 2: dumbbell shows direction and size of change per type — part-time +17.3 and non-tenure-track +5.1 rise, tenured −12.3 and tenure-track −8.7 fall.
+- Together: growth is concentrated in the least secure category.
 
 # Finishing off
 
-All code chunks run without errors and the document knits to `lab-06.html`.
+All chunks run cleanly; the document knits to `lab-06.html`.
